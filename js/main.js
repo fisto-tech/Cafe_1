@@ -1,4 +1,3 @@
-const startTime = Date.now();
 
 // Force scroll to top on refresh
 if (history.scrollRestoration) {
@@ -97,24 +96,19 @@ document.addEventListener("DOMContentLoaded", () => {
       .fromTo(".hero-btn-container", { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, "-=0.8")
       .fromTo(".hero-content-right > div", { opacity: 0, x: 20 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.8 }, "-=1.0");
 
-    // Wait for at least 3 seconds before hiding preloader
+    // Hide preloader on load
     window.addEventListener('load', () => {
-        const elapsed = Date.now() - startTime;
-        const remainingTime = Math.max(0, 3000 - elapsed);
-        
-        setTimeout(() => {
-            if (preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-                    tl.play(); // Start GSAP animations
-                }, 1000); // Wait for transition-opacity duration
-            } else {
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
                 if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-                tl.play();
-            }
-        }, remainingTime);
+                tl.play(); // Start GSAP animations
+            }, 1000); // Wait for transition-opacity duration
+        } else {
+            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+            tl.play();
+        }
     });
 
     // Mobile Menu Logic
